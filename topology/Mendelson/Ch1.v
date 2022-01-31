@@ -8,10 +8,10 @@ Section Ch1.
 Theorem ex_1_2_1a : forall (U:Type) (A:Ensemble U), 
   In (Ensemble U) (Power_set U A) A. 
 Proof.
-	intros.
-	apply Definition_of_Power_set.
-	unfold Included.
-	trivial. (* p -> p is true for any prop p *)
+  intros.
+  apply Definition_of_Power_set.
+  unfold Included.
+  trivial. (* p -> p is true for any prop p *)
 Qed.
 
 (* exercise 1_2_1b is false *)
