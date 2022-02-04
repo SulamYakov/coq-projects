@@ -1,8 +1,8 @@
 (* Introduction to Topology by Bert Mendelson *)
+(* Chapter 1 *)
 
 Require Export Coq.Sets.Powerset.
 
-(*** Chapter 1 ***)
 Section Ch1.
 
 Theorem ex_1_2_1a : forall (U:Type) (A:Ensemble U), 
