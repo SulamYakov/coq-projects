@@ -10,7 +10,7 @@ Theorem ex_1_1_1_a : forall A B C: Ensemble U,
   Intersection U A (Union U B C) = Union U (Intersection U A B) (Intersection U A C).
 (* I need to figure out how to make this less messy, since U is obvious yet causes a lot of unnecessary errors due to sheer forgetfulness.*)
 Proof.
-  intros.
+  intros A B C.
 Admitted.
 
 Theorem ex_1_1_1_b : forall A B C: Ensemble U, 
@@ -23,6 +23,8 @@ Theorem ex_1_1_1_c : forall A B C: Ensemble U,
   Setminus U A (Union U B C) = Intersection U (Setminus U A B) (Setminus U A C).
 Proof.
   intros.
+  unfold Setminus.
+  
 Admitted.
 
 Theorem ex_1_1_1_d : forall A B C: Ensemble U, 
