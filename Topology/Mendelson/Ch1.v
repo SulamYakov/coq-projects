@@ -50,11 +50,13 @@ Proof.
   intros U A B C h.
   unfold Included.
   intros x h0.
+  unfold Included in h.
   destruct h as [h1 h2].
-  unfold Included in h1, h2.
   apply h1 in h0.
-  apply h2 in h0.
+  apply h2.
   tauto.
 Qed.
+
+
 
 End Ch1.
