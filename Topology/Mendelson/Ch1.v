@@ -57,6 +57,30 @@ Proof.
   tauto.
 Qed.
 
+(* Theorem ex_1_2_3 : *)
 
+Theorem ex_1_3_1a : forall (U:Type) (A B S:Ensemble U),
+  Included U A S /\ Included U B S /\ Included U A B <-> Union U A B = B.
+Proof.
+  intros U A B S. 
+  split.
+  - intros h. destruct h as [h0 [h1 h2]]. 
+Admitted.
+
+Theorem ex_1_3_1b : forall (U:Type) (A B S:Ensemble U),
+  Included U A S /\ Included U B S /\ Included U A B <-> Intersection U A B = A.
+Proof.
+  intros U A B S. 
+  split.
+  - intros h. destruct h as [h0 [h1 h2]].
+Admitted.
+
+Theorem ex_1_3_1c : forall (U:Type) (A B S:Ensemble U),
+  Included U A S /\ Included U B S /\ Included U A (Complement U B) <-> Intersection U A B = Empty_set U.
+Proof.
+  intros U A B S.
+  split.
+  - intros h. destruct h as [h0 [h1 h2]].
+Admitted.
 
 End Ch1.
