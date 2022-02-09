@@ -42,4 +42,19 @@ Proof.
   - (* proof that A = C *)
 Admitted.
 
+(* exercise 1_2_1h is true *)
+
+Theorem ex_1_2_2 : forall (U:Type) (A B C:Ensemble U), 
+  (Included U A B /\ Included U B C) -> Included U A C.
+Proof.
+  intros U A B C h.
+  unfold Included.
+  intros x h0.
+  destruct h as [h1 h2].
+  unfold Included in h1, h2.
+  apply h1 in h0.
+  apply h2 in h0.
+  tauto.
+Qed.
+
 End Ch1.
