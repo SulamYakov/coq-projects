@@ -11,7 +11,7 @@ Proof.
   intros.
   apply Definition_of_Power_set.
   unfold Included.
-  trivial. (* p -> p is true for any prop p *)
+  tauto. (* p -> p is true for any prop p *)
 Qed.
 
 (* exercise 1_2_1b is false *)
@@ -33,11 +33,13 @@ Qed.
 Theorem ex_1_2_1g : forall (U:Type) (A B:Ensemble U), 
   Included U A B -> Included (Ensemble U) (Power_set U A) (Power_set U B).
 Proof.
-  unfold Included.
-  intros U A B h1 C.
-  unfold In.
-  intro h2. apply Definition_of_Power_set.
-  unfold Included.
+  intros U A B h1.
+  unfold Included. 
+  intros C h2.
+  apply Definition_of_Power_set.
+  replace C with A.
+  - apply h1.
+  - (* proof that A = C *)
 Admitted.
 
 End Ch1.
