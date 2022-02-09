@@ -59,28 +59,69 @@ Qed.
 
 (* Theorem ex_1_2_3 : *)
 
-Theorem ex_1_3_1a : forall (U:Type) (A B S:Ensemble U),
-  Included U A S /\ Included U B S /\ Included U A B <-> Union U A B = B.
+Theorem ex_1_3_1a : forall (U:Type) (A B:Ensemble U),
+  Included U A B <-> Union U A B = B.
 Proof.
-  intros U A B S. 
+  intros U A B. 
   split.
-  - intros h. destruct h as [h0 [h1 h2]]. 
+  - intros h. 
 Admitted.
 
-Theorem ex_1_3_1b : forall (U:Type) (A B S:Ensemble U),
-  Included U A S /\ Included U B S /\ Included U A B <-> Intersection U A B = A.
+Theorem ex_1_3_1b : forall (U:Type) (A B:Ensemble U),
+  Included U A B <-> Intersection U A B = A.
 Proof.
-  intros U A B S. 
+  intros U A B. 
   split.
-  - intros h. destruct h as [h0 [h1 h2]].
+  - intros h.
 Admitted.
 
-Theorem ex_1_3_1c : forall (U:Type) (A B S:Ensemble U),
-  Included U A S /\ Included U B S /\ Included U A (Complement U B) <-> Intersection U A B = Empty_set U.
+Theorem ex_1_3_1c : forall (U:Type) (A B:Ensemble U),
+  Included U A (Complement U B) <-> Intersection U A B = Empty_set U.
 Proof.
-  intros U A B S.
+  intros U A B.
   split.
-  - intros h. destruct h as [h0 [h1 h2]].
+  - intros h. 
+Admitted.
+
+Theorem ex_1_3_1d : forall (U:Type) (A B:Ensemble U),
+  Included U (Complement U A) B <-> Union U A B = Full_set U.
+Proof.
+  intros U A B.
+  split.
+  - intros h. 
+Admitted.
+
+Theorem ex_1_3_1e : forall (U:Type) (A B:Ensemble U),
+  Included U A B <-> Included U (Complement U B) (Complement U A).
+Proof.
+  intros U A B.
+  split.
+  - intros h. 
+    unfold Included in h. 
+    unfold Included. 
+    intros x h0. 
+Admitted.
+
+Theorem ex_1_3_1f : forall (U:Type) (A B:Ensemble U),
+  Included U A (Complement U B) <-> Included U B (Complement U A).
+Proof.
+  intros U A B.
+  split.
+  - intros h. 
+Admitted.
+
+Theorem ex_1_3_2a : forall (U:Type) (X Y Z:Ensemble U),
+  Included U X Y /\ Included U Y Z -> Included U (Setminus U Y X) (Setminus U Z X).
+Proof.
+  intros U X Y Z h.
+  destruct h as [h0 h1].
+Admitted.
+
+Theorem ex_1_3_2b : forall (U:Type) (X Y Z:Ensemble U),
+  Included U X Y /\ Included U Y Z -> Setminus U Z (Setminus U Y X) = Union U X (Setminus U Z Y).
+Proof.
+  intros U X Y Z h.
+  destruct h as [h0 h1].
 Admitted.
 
 End Ch1.
