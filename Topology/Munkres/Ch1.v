@@ -72,7 +72,6 @@ forall A B C,
 Proof.
   intros A B C.
   apply Extensionality_Ensembles.
-  split. red in |- *. intros x H.
 Admitted.
 
 Theorem ex_1_1_1d: 
