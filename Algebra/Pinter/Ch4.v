@@ -166,7 +166,7 @@ Proof. intros a b.
 Qed.
 
 (* The inverse of an inverse produces the original element. *)
-Theorem double_inv : forall a, i (i a) = a.
+Theorem inv_double : forall a, i (i a) = a.
 Proof. intros a.
        assert (H0: i (i a) <+> i a = e).
        - rewrite inv_l. reflexivity.
@@ -179,7 +179,7 @@ Proof. intros a.
 Qed.
 
 (* The identity is its own inverse. *)
-Theorem id_inv : i e = e.
+Theorem inv_id : i e = e.
 Proof. assert (H0: i e <+> e = e).
        - rewrite inv_l. reflexivity.
        - rewrite id_r in H0.
@@ -228,11 +228,132 @@ Proof. intros a b x H0.
        assumption.
 Qed.
 
+Lemma assoc_quatre : forall a b c d : G,
+  a <+> b <+> c <+> d = a <+> b <+> (c <+> d).
+Proof. intros a b c d.
+       rewrite assoc.
+       reflexivity.
+Qed.
+
+Lemma assoc_4selec3 : forall a b c d : G,
+  a <+> b <+> c <+> d = a <+> (b <+> c <+> d).
+Proof. intros a b c d.
+       rewrite assoc. rewrite assoc. rewrite assoc.
+       reflexivity.
+Qed. 
+
+Lemma assoc_4selec2 : forall a b c d : G,
+  a <+> b <+> c <+> d = a <+> (b <+> c) <+> d.
+Proof. intros a b c d.
+       rewrite assoc.
+       rewrite quatre.
+       reflexivity.
+Qed. (* these associativity lemmas could probably be summed up in an all-encompassing theorem, whereby one sets the number of elements in all and the line of elements to parenthesize. *) 
+
+  
 Theorem ex_4_A_3 : forall a b c x : G,
     (x <+> x <+> a = b <+> x <+> i c) 
  /\ (a <+> c <+> x = x <+> a <+> c)
  -> (x = b <+> i (a <+> c)).
 Proof. intros a b c x H0.
        destruct H0.
-Admitted.  
+       assert (x <+> x <+> a <+> c = b <+> x <+> i c <+> c).
+       - rewrite H. reflexivity.
+       - rewrite assoc_quatre in H1.
+         rewrite assoc_quatre in H1.
+         rewrite <- assoc_quatre in H1. (* how can I rewrite RHS w/o LHS? *)
+         rewrite inv_l in H1.
+         rewrite assoc_4selec3 in H1.
+         rewrite <- H0 in H1.
+         rewrite <- assoc_4selec3 in H1.
+         rewrite id_r in H1.
+         assert (x <+> a <+> c <+> x <+> i x = b <+> x <+> i x).
+         rewrite H1. reflexivity.
+         rewrite assoc in H2.
+         rewrite inv_r in H2.
+         rewrite id_r in H2.
+         rewrite assoc in H2. rewrite assoc in H2. rewrite <- assoc in H2.
+         rewrite inv_r in H2.
+         rewrite id_r in H2.
+         assert (x <+> a <+> c <+> i (a <+> c) = b <+> i (a <+> c)).
+         rewrite H2. reflexivity.
+         rewrite assoc_4selec2 in H3.
+         rewrite assoc in H3.
+         rewrite inv_r in H3.
+         rewrite id_r in H3.
+         assumption.
+Qed.
+
+Theorem ex_4_A_4 : forall a b x : G,
+    (a <+> x <+> x = b) 
+ /\ (x <+> x <+> x = e) 
+ -> (x = i b <+> a).  
+Proof. intros a b x H0.
+       destruct H0.
+       assert (a <+> x <+> x <+> x = b <+> x).
+       rewrite H. reflexivity.
+       rewrite assoc_4selec3 in H1.
+       rewrite H0 in H1.
+       rewrite id_r in H1.
+       assert (i b <+> a = i b <+> b <+> x).
+       rewrite H1. rewrite assoc. reflexivity.
+       rewrite inv_l in H2.
+       rewrite id_l in H2.
+       symmetry.
+       assumption.
+Qed. 
+
+Theorem ex_4_A_5 : forall a x : G,
+    (x <+> x = a <+> a) 
+ /\ (x <+> x <+> x <+> x <+> x = e) 
+ -> (x = i (a <+> a <+> a <+> a)).
+Proof. intros a x H0. destruct H0.
+       assert (x <+> x <+> x <+> x <+> x <+> i x = i x).
+       rewrite H0. rewrite id_l. reflexivity.
+       rewrite assoc in H1. 
+       rewrite inv_r in H1. 
+       rewrite id_r in H1.
+       assert (i (x <+> x <+> x <+> x) = i (i x)).
+       rewrite H1. reflexivity.
+       rewrite <- H. rewrite assoc. rewrite <- H. rewrite <- assoc.
+       rewrite H2.
+       rewrite inv_double.
+       reflexivity.
+Qed.
+
+Lemma assoc_9selec3 : forall a b c d g h j k l : G,
+  a <+> b <+> c <+> d <+> g <+> h <+> j <+> k <+> l
+= a <+> b <+> (c <+> d <+> g) <+> (h <+> j <+> k) <+> l.
+Proof. intros a b c d g h j k l.
+       symmetry.
+       rewrite <- assoc.
+       rewrite <- assoc. 
+       rewrite <- assoc. 
+       rewrite <- assoc.
+       reflexivity.
+Qed. 
+
+Theorem ex_4_A_6 : forall a b x : G,
+    ((x <+> a <+> x) <+> (x <+> a <+> x) <+> (x <+> a <+> x) = b <+> x) 
+ /\ (x <+> x <+> a = i (x <+> a)) 
+ -> (x = i (a <+> b)).
+Proof. intros a b x H0. destruct H0.
+       rewrite <- assoc in H.
+       rewrite <- assoc in H.
+       rewrite <- assoc in H.
+       rewrite <- assoc in H.
+       rewrite assoc_9selec3 in H.
+       rewrite H0 in H.
+       rewrite inv_r in H.
+       rewrite id_l in H.
+       rewrite inv_distr in H.
+       rewrite assoc in H. 
+       rewrite inv_l in H. 
+       rewrite id_r in H.
+       assert (i (a <+> b) = i b <+> b <+> x).
+       rewrite assoc. rewrite <- H. apply inv_distr.
+       rewrite inv_l in H1. rewrite id_l in H1.
+       symmetry. assumption.
+Qed.
+        
 End Ch4.

@@ -63,8 +63,36 @@ forall A B C,
 Proof.
   intros A B C.
   apply Extensionality_Ensembles.
-  split.
-Admitted.
+  split. 
+  - unfold Included.
+    apply Union_ind.
+    2:{ apply Intersection_ind.
+        intros x H0 H1.
+        apply Intersection_intro.
+        apply Union_intror. assumption.
+        apply Union_intror. assumption.
+    }
+    intros x H2.
+    apply Intersection_intro. apply Union_introl. 
+    assumption. 
+    apply Union_introl. 
+    assumption.
+  - unfold Included. apply Intersection_ind.
+    intros x H0 H1.
+    apply Union_inv in H0. apply Union_inv in H1.
+    destruct H0.
+    2:{ destruct H1.
+        apply Union_introl. 
+        assumption. 
+        apply Union_intror. apply Intersection_intro. 
+        assumption. assumption.
+    }
+    apply Union_introl.
+    assumption.
+Qed.
+(* (In U) is a functor from statements A x and _ x? 
+    mapping implications to other arrows in a new category? Or an endofunctor? *)
+(* what about a function/general morphism that maps hypotheses to types + sorts_i for i in the naturals? *)
 
 Theorem ex_1_1_1c: 
 forall A B C, 
