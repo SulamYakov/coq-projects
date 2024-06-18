@@ -129,7 +129,10 @@ forall A B C,
 Proof.
   intros A B C.
   apply Extensionality_Ensembles.
-  split; red in |- *; intros x H.
+  split; red in |- *; intros x H0.
+  unfold Setminus in H0.
+  destruct H0.
+  
 Admitted.
 
 End s1.
