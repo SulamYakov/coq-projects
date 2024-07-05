@@ -337,7 +337,7 @@ Theorem ex_4_A_6 : forall a b x : G,
     ((x <+> a <+> x) <+> (x <+> a <+> x) <+> (x <+> a <+> x) = b <+> x) 
  /\ (x <+> x <+> a = i (x <+> a)) 
  -> (x = i (a <+> b)).
-Proof. intros a b x H0. destruct H0.
+    Proof. intros a b x H0. destruct H0.
        rewrite <- assoc in H.
        rewrite <- assoc in H.
        rewrite <- assoc in H.
@@ -355,5 +355,48 @@ Proof. intros a b x H0. destruct H0.
        rewrite inv_l in H1. rewrite id_l in H1.
        symmetry. assumption.
 Qed.
-        
+
+Theorem ex_4_B_1 : forall x : G,
+    ~ (x <+> x = e -> x = e).
+    Proof. intros x. unfold "~". intros H.
+      (* proof by contradiction goes here *)
+    Admitted.      
+
+Theorem ex_4_B_2 : forall x a : G, 
+    ~ (x <+> x = a <+> a -> x = a).
+    Proof.
+      (* proof by contradiction goes here *)
+    Admitted.
+      
+Theorem ex_4_B_3 : forall a b : G,
+    ~ (a <+> b <+> (a <+> b) = a <+> a <+> b <+> b).
+    Proof.       
+      (* proof by contradiction goes here *)
+    Admitted.
+    
+Theorem ex_4_B_4 : forall x : G,
+    x <+> x = x -> x = e.
+    Proof. intros x H.
+      assert (i x <+> x <+> x = i x <+> x).
+      - rewrite assoc. rewrite H. reflexivity.
+      - rewrite inv_l in H0.
+        rewrite id_l in H0.
+        assumption.
+Qed.
+      
+Theorem ex_4_B_5 : 
+    ~ (exists y : G, forall x : G,   x = y <+> y) /\
+       forall y : G, exists x : G, ~(x = y <+> y) /\
+    ~ (exists y : G, forall x : G,   x = y <+> y) <->
+       forall y : G, exists x : G, ~(x = y <+> y). 
+    Proof.       
+      (* proof by contradiction goes here *)
+    Admitted.
+
+(*Theorem ex_4_B_6 :*)
+
+Theorem ex_4_C_1 : forall a b : G,
+    a <+> b = b <+> a -> i a <+> i b = i b <+> i a.
+    Proof. intros a b H.
+    Admitted.
 End Ch4.
