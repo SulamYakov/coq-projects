@@ -398,5 +398,196 @@ Theorem ex_4_B_5 :
 Theorem ex_4_C_1 : forall a b : G,
     a <+> b = b <+> a -> i a <+> i b = i b <+> i a.
     Proof. intros a b H.
-    Admitted.
+           rewrite <- inv_distr.
+           rewrite <- inv_distr.
+           rewrite H. reflexivity.
+Qed.
+
+Theorem ex_4_C_2 : forall a b : G,
+    a <+> b = b <+> a -> a <+> i b = i b <+> a.
+    Proof. 
+      intros a b Comm.
+      assert (a = i b <+> a <+> b).
+        rewrite assoc. 
+        rewrite Comm. 
+        rewrite <- assoc. 
+        rewrite inv_l. 
+        rewrite id_l. 
+        reflexivity.
+      rewrite H.
+      rewrite assoc.
+      rewrite inv_r.
+      rewrite id_r.
+      rewrite assoc.
+      rewrite Comm.
+      rewrite <- assoc.
+      rewrite quatre.
+      rewrite inv_l.
+      rewrite id_r.
+      reflexivity.
+Qed.
+
+Theorem ex_4_C_3 : forall a b : G,
+    a <+> b = b <+> a -> a <+> (a <+> b) = (a <+> b) <+> a.
+    Proof. 
+      intros a b Comm.
+      rewrite assoc.
+      rewrite Comm.
+      reflexivity.
+Qed.
+
+Theorem ex_4_C_4 : forall a b : G,
+    a <+> b = b <+> a -> (a <+> a) <+> (b <+> b) = (b <+> b) <+> (a <+> a).
+    Proof. 
+      intros a b Comm.       
+      rewrite quatre. rewrite Comm. 
+      rewrite <- quatre. rewrite Comm.
+      rewrite  quatre. rewrite Comm.
+      rewrite quatre. reflexivity.
+Qed.
+
+Lemma six : forall a b c d g h : G,
+    a <+> b <+> c <+> d <+> g <+> h = a <+> b <+> (c <+> d) <+> g <+> h.
+    Proof.
+      intros a b c d g h.
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc.
+      rewrite assoc.
+      rewrite assoc.
+      rewrite assoc.
+      rewrite assoc.
+      reflexivity.
+Qed.
+
+Theorem ex_4_C_5 : forall a b x : G,
+    a <+> b = b <+> a -> (x <+> a <+> i x) <+> (x <+> b <+> i x) = (x <+> b <+> i x) <+> (x <+> a <+> i x).
+    Proof.
+      intros a b x Comm.
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc.
+      rewrite <- assoc. 
+      rewrite <- assoc. 
+      rewrite <- assoc. 
+      rewrite <- assoc. 
+      rewrite <- assoc. 
+      rewrite <- assoc. 
+      rewrite <- assoc. 
+      rewrite <- assoc.
+      rewrite six. rewrite inv_l. rewrite id_r.
+      rewrite six. rewrite inv_l. rewrite id_r.
+      rewrite assoc.
+      rewrite quatre. rewrite Comm. 
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc. 
+      rewrite assoc. 
+      reflexivity.
+Qed.
+
+Lemma left_annex_4_3 : forall a b c d : G,
+    a <+> b <+> (c <+> d) = a <+> (b <+> c <+> d).
+    Proof.
+      intros a b c d.
+      rewrite assoc.
+      rewrite assoc.
+      reflexivity.
+Qed.
+ 
+Theorem ex_4_C_6 : forall a b : G,
+    a <+> b = b <+> a <-> a <+> b <+> i a = b.
+    Proof.
+      intros a b. split.
+      - intros H. 
+        rewrite H. 
+        rewrite assoc. 
+        rewrite inv_r. 
+        rewrite id_r. 
+        reflexivity.
+      - intros J.
+        symmetry in J.
+        rewrite J.
+        rewrite assoc. 
+        rewrite <- quatre. 
+        rewrite inv_l. 
+        rewrite id_r.
+        rewrite <- assoc.
+        rewrite <- assoc.
+        symmetry in J.
+        rewrite assoc.
+        rewrite left_annex_4_3.
+        rewrite J.
+        reflexivity.
+Qed.
+
+Theorem ex_4_C_7 : forall a b : G,
+    a <+> b = b <+> a <-> a <+> b <+> i a <+> i b = e.
+    Proof.
+      intros a b. split.
+      - intros H.
+        rewrite H. 
+        rewrite assoc. 
+        rewrite quatre. 
+        rewrite inv_r. 
+        rewrite id_r. 
+        rewrite inv_r. 
+        reflexivity.
+      - intros J.
+        assert (J0 : a <+> b <+> i a <+> i b <+> b = b).
+        rewrite J. rewrite id_l. reflexivity.
+        rewrite assoc in J0. 
+        rewrite inv_l in J0.
+        rewrite id_r in J0.
+        assert (J1 : a <+> b <+> i a <+> a = b <+> a).
+        rewrite J0. reflexivity.
+        rewrite assoc in J1.
+        rewrite inv_l in J1.
+        rewrite id_r in J1.
+        assumption.
+Qed.
+
+Theorem ex_4_D_1 : forall a b : G,
+    a <+> b = e -> b <+> a = e.
+    Proof.
+      intros a b H.
+      apply inv_uniq_l in H.
+      rewrite H.
+      rewrite inv_r.
+      reflexivity.
+Qed.
+
+Theorem ex_4_D_2 : forall a b c : G,
+    a <+> b <+> c = e -> (c <+> a <+> b = e /\ b <+> c <+> a = e).
+    Proof.
+      intros a b c H. split.
+      - assert (H0 : c <+> a <+> b <+> c = c).
+        rewrite assoc. 
+        rewrite left_annex_4_3. 
+        rewrite H. 
+        rewrite id_r. 
+        reflexivity.
+        assert (H1 : c <+> a <+> b <+> c <+> i c = c <+> i c).
+        rewrite H0. reflexivity.
+        rewrite assoc in H1.
+        rewrite inv_r in H1.
+        rewrite id_r in H1.
+        assumption.
+      - assert (J : i a <+> a <+> b <+> c = i a).
+        rewrite assoc. 
+        rewrite left_annex_4_3. 
+        rewrite H.
+        rewrite id_r. reflexivity.
+        assert (J0 : i a <+> a <+> b <+> c <+> a = i a <+> a).
+        rewrite J. reflexivity.
+        rewrite inv_l in J0.
+        rewrite id_l in J0.
+        assumption.
+Qed.
+
+(* generalization of 1 and 2 : Theorem ex_4_D_3 : forall *)
 End Ch4.
