@@ -127,26 +127,37 @@ Proof. intros a p H0.
 Qed.
 
 (* The left inverse is unique. *)
-Theorem inv_uniq_l : forall a b, a <+> b = e -> a = i b.
-Proof. intros a b H0.
-       assert (H1: a <+> b <+> i b = e <+> i b).
-       - rewrite H0. reflexivity.
-       - rewrite assoc in H1.
-         rewrite inv_r in H1.
-         rewrite id_l in H1.
-         rewrite id_r in H1.
+Theorem inv_uniq_l : forall a b, a <+> b = e <-> a = i b.
+Proof. intros a b. split.
+       - intros H. 
+         assert (H0: a <+> b <+> i b = e <+> i b).
+           rewrite H. reflexivity.
+         rewrite assoc in H0.
+         rewrite inv_r in H0.
+         rewrite id_l in H0.
+         rewrite id_r in H0.
+         assumption.
+       - intros J.
+         assert (J0: a <+> b = i b <+> b).
+           rewrite J. reflexivity.
+         rewrite inv_l in J0.
          assumption.
 Qed.
 
 (* The right inverse is unique. *)
-Theorem inv_uniq_r : forall a b, a <+> b = e -> b = i a.
-Proof. intros a b H0.
-       assert (H1: i a <+> a <+> b = i a <+> e).
-       - rewrite assoc. rewrite H0. reflexivity.
-       - rewrite inv_l in H1.
-         rewrite id_l in H1.
-         rewrite id_r in H1.
-         assumption.
+Theorem inv_uniq_r : forall a b, a <+> b = e <-> b = i a.
+Proof. intros a b. split.
+       - intros H. 
+         assert (H0: i a <+> a <+> b = i a <+> e).
+           rewrite assoc. rewrite H. reflexivity.
+         rewrite inv_l in H0.
+         rewrite id_l in H0.
+         rewrite id_r in H0.
+         assumption. 
+       - intros J.
+         rewrite J.
+         rewrite inv_r.
+         reflexivity.
 Qed.
 
 (* The inverse operator contravariantly distributes over the group operator. *)
@@ -375,20 +386,15 @@ Theorem ex_4_B_3 : forall a b : G,
     Admitted.
     
 Theorem ex_4_B_4 : forall x : G,
-    x <+> x = x -> x = e.
-    Proof. intros x H.
-      assert (i x <+> x <+> x = i x <+> x).
-      - rewrite assoc. rewrite H. reflexivity.
-      - rewrite inv_l in H0.
-        rewrite id_l in H0.
-        assumption.
-Qed.
+    x <+> x = x 
+ -> x = e.
+    Proof. apply unique_id. Qed.
       
 Theorem ex_4_B_5 : 
-    ~ (exists y : G, forall x : G,   x = y <+> y) /\
-       forall y : G, exists x : G, ~(x = y <+> y) /\
-    ~ (exists y : G, forall x : G,   x = y <+> y) <->
-       forall y : G, exists x : G, ~(x = y <+> y). 
+    ~ (exists y : G, forall x : G,   x = y <+> y) 
+<-> forall y : G, exists x : G, ~(x = y <+> y) 
+/\  ~ (exists y : G, forall x : G,   x = y <+> y) 
+<-> forall y : G, exists x : G, ~(x = y <+> y). 
     Proof.       
       (* proof by contradiction goes here *)
     Admitted.
@@ -396,7 +402,8 @@ Theorem ex_4_B_5 :
 (*Theorem ex_4_B_6 :*)
 
 Theorem ex_4_C_1 : forall a b : G,
-    a <+> b = b <+> a -> i a <+> i b = i b <+> i a.
+    a <+> b = b <+> a 
+ -> i a <+> i b = i b <+> i a.
     Proof. intros a b H.
            rewrite <- inv_distr.
            rewrite <- inv_distr.
@@ -404,7 +411,8 @@ Theorem ex_4_C_1 : forall a b : G,
 Qed.
 
 Theorem ex_4_C_2 : forall a b : G,
-    a <+> b = b <+> a -> a <+> i b = i b <+> a.
+    a <+> b = b <+> a 
+ -> a <+> i b = i b <+> a.
     Proof. 
       intros a b Comm.
       assert (a = i b <+> a <+> b).
@@ -428,7 +436,8 @@ Theorem ex_4_C_2 : forall a b : G,
 Qed.
 
 Theorem ex_4_C_3 : forall a b : G,
-    a <+> b = b <+> a -> a <+> (a <+> b) = (a <+> b) <+> a.
+    a <+> b = b <+> a 
+ -> a <+> (a <+> b) = (a <+> b) <+> a.
     Proof. 
       intros a b Comm.
       rewrite assoc.
@@ -437,7 +446,8 @@ Theorem ex_4_C_3 : forall a b : G,
 Qed.
 
 Theorem ex_4_C_4 : forall a b : G,
-    a <+> b = b <+> a -> (a <+> a) <+> (b <+> b) = (b <+> b) <+> (a <+> a).
+    a <+> b = b <+> a 
+ -> (a <+> a) <+> (b <+> b) = (b <+> b) <+> (a <+> a).
     Proof. 
       intros a b Comm.       
       rewrite quatre. rewrite Comm. 
@@ -461,8 +471,10 @@ Lemma six : forall a b c d g h : G,
       reflexivity.
 Qed.
 
+(*removing the parentheses breaks the proof - why?*)
 Theorem ex_4_C_5 : forall a b x : G,
-    a <+> b = b <+> a -> (x <+> a <+> i x) <+> (x <+> b <+> i x) = (x <+> b <+> i x) <+> (x <+> a <+> i x).
+    a <+> b = b <+> a 
+-> (x <+> a <+> i x) <+> (x <+> b <+> i x) = (x <+> b <+> i x) <+> (x <+> a <+> i x).
     Proof.
       intros a b x Comm.
       rewrite assoc. 
@@ -500,7 +512,8 @@ Lemma left_annex_4_3 : forall a b c d : G,
 Qed.
  
 Theorem ex_4_C_6 : forall a b : G,
-    a <+> b = b <+> a <-> a <+> b <+> i a = b.
+    a <+> b = b <+> a 
+<-> a <+> b <+> i a = b.
     Proof.
       intros a b. split.
       - intros H. 
@@ -526,7 +539,8 @@ Theorem ex_4_C_6 : forall a b : G,
 Qed.
 
 Theorem ex_4_C_7 : forall a b : G,
-    a <+> b = b <+> a <-> a <+> b <+> i a <+> i b = e.
+    a <+> b = b <+> a 
+<-> a <+> b <+> i a <+> i b = e.
     Proof.
       intros a b. split.
       - intros H.
@@ -552,7 +566,8 @@ Theorem ex_4_C_7 : forall a b : G,
 Qed.
 
 Theorem ex_4_D_1 : forall a b : G,
-    a <+> b = e -> b <+> a = e.
+    a <+> b = e 
+ -> b <+> a = e.
     Proof.
       intros a b H.
       apply inv_uniq_l in H.
@@ -562,27 +577,28 @@ Theorem ex_4_D_1 : forall a b : G,
 Qed.
 
 Theorem ex_4_D_2 : forall a b c : G,
-    a <+> b <+> c = e -> (c <+> a <+> b = e /\ b <+> c <+> a = e).
+    a <+> b <+> c = e 
+ -> c <+> a <+> b = e /\ b <+> c <+> a = e.
     Proof.
       intros a b c H. split.
-      - assert (H0 : c <+> a <+> b <+> c = c).
+      - assert (H0: c <+> a <+> b <+> c = c).
         rewrite assoc. 
         rewrite left_annex_4_3. 
         rewrite H. 
         rewrite id_r. 
         reflexivity.
-        assert (H1 : c <+> a <+> b <+> c <+> i c = c <+> i c).
+        assert (H1: c <+> a <+> b <+> c <+> i c = c <+> i c).
         rewrite H0. reflexivity.
         rewrite assoc in H1.
         rewrite inv_r in H1.
         rewrite id_r in H1.
         assumption.
-      - assert (J : i a <+> a <+> b <+> c = i a).
+      - assert (J: i a <+> a <+> b <+> c = i a).
         rewrite assoc. 
         rewrite left_annex_4_3. 
         rewrite H.
         rewrite id_r. reflexivity.
-        assert (J0 : i a <+> a <+> b <+> c <+> a = i a <+> a).
+        assert (J0: i a <+> a <+> b <+> c <+> a = i a <+> a).
         rewrite J. reflexivity.
         rewrite inv_l in J0.
         rewrite id_l in J0.
@@ -590,4 +606,67 @@ Theorem ex_4_D_2 : forall a b c : G,
 Qed.
 
 (* generalization of 1 and 2 : Theorem ex_4_D_3 : forall *)
+
+Theorem ex_4_D_4 : forall a x y : G,
+    x <+> a <+> y = i a 
+ -> y <+> a <+> x = i a.
+    Proof. intros a x y H.
+      assert (H0: i (x <+> a <+> y) = i (i a)).
+        rewrite H. reflexivity.
+      rewrite inv_double in H0.
+      rewrite inv_distr in H0.
+      rewrite inv_distr in H0.
+      rewrite <- assoc in H0.
+      symmetry in H0. 
+      rewrite H0.
+      rewrite assoc. rewrite assoc. 
+      rewrite inv_l. rewrite id_r.
+      rewrite <- assoc. 
+      rewrite inv_r. rewrite id_l. 
+      rewrite <- H0. reflexivity.
+Qed.
+
+Theorem ex_4_D_5 : forall a : G,
+    a = i a 
+<-> a <+> a = e.
+    Proof. intros a. split.
+      - intros H. replace e with (a <+> i a).
+        rewrite <- H. reflexivity.
+        rewrite inv_r. reflexivity.
+      - intros J. apply inv_uniq_l in J. assumption.
+Qed.
+
+Theorem ex_4_D_6 : forall a b c : G,
+    c = i c 
+ -> a <+> b = c <-> a <+> b <+> c = e.
+    Proof. intros a b c H. split.
+      - intros H0. rewrite H in H0. 
+        rewrite H0. rewrite inv_l. 
+        reflexivity.
+      - intros J0. apply inv_uniq_l in J0. rewrite <- H in J0. 
+        assumption.
+Qed.
+
+Theorem ex_4_D_7 : forall a b c : G,
+    a = i a /\ b = i b /\ c = i c
+ -> a <+> b = c 
+ -> b <+> c = a /\ c <+> a = b.  
+    Proof. intros a b c H J. 
+      destruct H. destruct H0.
+      split.
+      - assert (J0: a <+> b <+> c = i c <+> c).
+          rewrite J. rewrite <- H1. reflexivity.
+        rewrite inv_l in J0.
+        assert (J1: a <+> (a <+> b <+> c) = a <+> e).
+          rewrite J0. reflexivity.
+        rewrite assoc in J1. 
+        rewrite <- assoc in J1.
+        rewrite <- assoc in J1.
+        assert (J2: a <+> a = e). 
+          apply inv_uniq_l. assumption.
+        rewrite J2 in J1. 
+        rewrite id_l in J1.
+        rewrite id_r in J1.
+        assumption.
+      -        
 End Ch4.
