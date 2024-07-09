@@ -668,5 +668,14 @@ Theorem ex_4_D_7 : forall a b c : G,
         rewrite id_l in J1.
         rewrite id_r in J1.
         assumption.
-      -        
+      - assert (K0: c <+> (a <+> b) = c <+> i c).
+          rewrite J. rewrite <- H1. reflexivity.
+        rewrite inv_r in K0.
+        rewrite <- assoc in K0.
+        apply inv_uniq_l in K0. (*why does apply work instead of rewrite here? why does rewrite require setoids?*)
+        rewrite K0. symmetry. 
+        assumption.
+Qed.
+
+           
 End Ch4.
